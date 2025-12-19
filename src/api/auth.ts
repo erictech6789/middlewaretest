@@ -1,27 +1,16 @@
-import { loginUser } from "../auth/login";
-import { validateLoginPayload } from "../utils/validation";
-
 export async function loginHandler(payload: any) {
-  const isValid = validateLoginPayload(payload);
-
-  if (!isValid) {
-    return {
-      status: 400,
-      message: "Invalid payload",
-    };
+  if (!validateLoginPayload(payload)) {
+    return { status: 400, message: "Invalid payload" };
   }
 
-  const result = await loginUser(payload.email, payload.password);
+  const user = await loginUser(
+    payload.email.trim(),
+    payload.password
+  );
 
-  if (!result) {
-    return {
-      status: 401,
-      message: "Authentication failed",
-    };
+  if (!user) {
+    return { status: 401, message: "Auth failed" };
   }
 
-  return {
-    status: 200,
-    user: result,
-  };
+  return { status: 200, user };
 }
