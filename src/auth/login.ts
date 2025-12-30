@@ -1,10 +1,3 @@
-/**
- * Authenticate a user by email and password and return their basic profile on success.
- *
- * @param email - The user's email address to look up
- * @param password - The plaintext password to validate against the stored password
- * @returns The user's `{ id, email, role }` if credentials match, `null` otherwise
- */
 export async function loginUser(email: string, password: string) {
   logInfo(`Login attempt: ${email}`);
 
