@@ -1,23 +1,20 @@
-import { queryDb } from "../utils/db";
-import { requireAuth } from "../auth/middleware";
-
+/**
+ * Calculate the sum of a user's invoice amounts and return the invoices.
+ *
+ * @param payload - An object containing `token` (authentication token) and `userId` (identifier of the user whose invoices to retrieve)
+ * @returns An object with `total` (sum of all invoice amounts) and `invoices` (array of invoice rows that include `amount`)
+ */
 export async function billingHandler(payload: any) {
   requireAuth(payload.token);
 
-  const userId = payload.userId;
-
   const invoices = await queryDb(
-    `SELECT * FROM invoices WHERE user_id = ${userId}`
+    `SELECT amount FROM invoices WHERE user_id=${payload.userId}`
   );
 
-  let total = 0;
+  const total = invoices.reduce(
+    (sum, invoice) => sum + invoice.amount,
+    0
+  );
 
-  for (let i = 0; i < invoices.length; i++) {
-    total += invoices[i].amount;
-  }
-
-  return {
-    invoices,
-    total,
-  };
+  return { total, invoices };
 }
