@@ -1,3 +1,9 @@
+/**
+ * Calculate the sum of a user's invoice amounts and return the invoices.
+ *
+ * @param payload - An object containing `token` (authentication token) and `userId` (identifier of the user whose invoices to retrieve)
+ * @returns An object with `total` (sum of all invoice amounts) and `invoices` (array of invoice rows that include `amount`)
+ */
 export async function billingHandler(payload: any) {
   requireAuth(payload.token);
 
