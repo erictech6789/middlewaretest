@@ -11,7 +11,10 @@ export async function loginHandler(payload: any) {
     };
   }
 
-  const result = await loginUser(payload.email, payload.password);
+  const result = await loginUser(
+    payload.email.trim(),
+    payload.password
+  );
 
   if (!result) {
     return {
